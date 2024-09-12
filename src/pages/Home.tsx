@@ -117,8 +117,15 @@ export default function Home() {
         <Filter
           title="რეგიონი"
           options={regions.map((region) => region.name)}
-          onFilterChange={(selected) => setRegionFilter(selected as string[])}
-          multiple={true}
+          onFilterChange={(selected: string | string[] | null) => {
+            if (Array.isArray(selected)) {
+              setRegionFilter(selected);
+            } else if (selected === null) {
+              setRegionFilter([]);
+            } else {
+              setRegionFilter([selected]);
+            }
+          }}
           selected={regionFilter}
           isActive={activeFilter === "region"}
           onToggle={() => handleToggleFilter("region")}
@@ -126,8 +133,8 @@ export default function Home() {
 
         <RangeFilter
           title="ფასი"
-          onFilterChange={(selected) =>
-            setPriceFilter(selected as { min: number; max: number } | null)
+          onFilterChange={(selected: { min: number; max: number } | null) =>
+            setPriceFilter(selected)
           }
           selected={priceFilter}
           isActive={activeFilter === "price"}
@@ -136,8 +143,8 @@ export default function Home() {
 
         <RangeFilter
           title="ფართობი"
-          onFilterChange={(selected) =>
-            setAreaFilter(selected as { min: number; max: number } | null)
+          onFilterChange={(selected: { min: number; max: number } | null) =>
+            setAreaFilter(selected)
           }
           selected={areaFilter}
           isActive={activeFilter === "area"}
@@ -146,8 +153,8 @@ export default function Home() {
 
         <BedroomsFilter
           title="საძინებლების რაოდენობა"
-          onFilterChange={(selected) =>
-            setBedroomFilter(selected as number | null)
+          onFilterChange={(selected: number | null) =>
+            setBedroomFilter(selected)
           }
           selected={bedroomFilter}
           isActive={activeFilter === "bedroom"}
