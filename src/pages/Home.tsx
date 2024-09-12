@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { MyContext } from "../App";
 import Item from "../components/Item";
-import RangeFilter from "../components/rangeFilter";
+import RangeFilter from "../components/RangeFilter";
 import BedroomsFilter from "../components/BedroomFilter";
 import Filter from "../components/RegionFilter";
 import ChosenFilters from "../components/ChoosenFilters";
