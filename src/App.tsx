@@ -19,7 +19,7 @@ interface IDataContext {
 
 export const MyContext = createContext<IDataContext>({
   data: null,
-  setData: () => null,
+  setData: () => {},
 });
 
 function App() {
