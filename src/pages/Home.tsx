@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 import Item from "../components/Item";
 import RangeFilter from "../components/RangeFilter";
@@ -12,6 +13,7 @@ interface IRegion {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
   const { data } = useContext(MyContext);
   const [regionFilter, setRegionFilter] = useState<string[]>([]);
   const [areaFilter, setAreaFilter] = useState<{
@@ -108,54 +110,70 @@ export default function Home() {
 
   return (
     <div className="py-20 px-40 relative">
-      <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit p-1">
-        <RegionFilter
-          title="რეგიონი"
-          options={regions.map((region) => region.name)}
-          onFilterChange={(selected: string | string[] | null) => {
-            if (Array.isArray(selected)) {
-              setRegionFilter(selected);
-            } else if (selected === null) {
-              setRegionFilter([]);
-            } else {
-              setRegionFilter([selected]);
+      <div className="flex justify-between">
+        <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit p-1">
+          <RegionFilter
+            title="რეგიონი"
+            options={regions.map((region) => region.name)}
+            onFilterChange={(selected: string | string[] | null) => {
+              if (Array.isArray(selected)) {
+                setRegionFilter(selected);
+              } else if (selected === null) {
+                setRegionFilter([]);
+              } else {
+                setRegionFilter([selected]);
+              }
+            }}
+            selected={regionFilter}
+            isActive={activeFilter === "region"}
+            onToggle={() => handleToggleFilter("region")}
+            multiple
+          />
+
+          <RangeFilter
+            title="საფასო კატეგორია"
+            onFilterChange={(selected: { min: number; max: number } | null) =>
+              setPriceFilter(selected)
             }
-          }}
-          selected={regionFilter}
-          isActive={activeFilter === "region"}
-          onToggle={() => handleToggleFilter("region")}
-          multiple
-        />
+            selected={priceFilter}
+            isActive={activeFilter === "price"}
+            onToggle={() => handleToggleFilter("price")}
+          />
 
-        <RangeFilter
-          title="საფასო კატეგორია"
-          onFilterChange={(selected: { min: number; max: number } | null) =>
-            setPriceFilter(selected)
-          }
-          selected={priceFilter}
-          isActive={activeFilter === "price"}
-          onToggle={() => handleToggleFilter("price")}
-        />
+          <RangeFilter
+            title="ფართობი"
+            onFilterChange={(selected: { min: number; max: number } | null) =>
+              setAreaFilter(selected)
+            }
+            selected={areaFilter}
+            isActive={activeFilter === "area"}
+            onToggle={() => handleToggleFilter("area")}
+          />
 
-        <RangeFilter
-          title="ფართობი"
-          onFilterChange={(selected: { min: number; max: number } | null) =>
-            setAreaFilter(selected)
-          }
-          selected={areaFilter}
-          isActive={activeFilter === "area"}
-          onToggle={() => handleToggleFilter("area")}
-        />
+          <BedroomsFilter
+            title="საძინებლების რაოდენობა"
+            onFilterChange={(selected: number | null) =>
+              setBedroomFilter(selected)
+            }
+            selected={bedroomFilter}
+            isActive={activeFilter === "bedroom"}
+            onToggle={() => handleToggleFilter("bedroom")}
+          />
+        </div>
 
-        <BedroomsFilter
-          title="საძინებლების რაოდენობა"
-          onFilterChange={(selected: number | null) =>
-            setBedroomFilter(selected)
-          }
-          selected={bedroomFilter}
-          isActive={activeFilter === "bedroom"}
-          onToggle={() => handleToggleFilter("bedroom")}
-        />
+        <div>
+          <button
+            onClick={() => {
+              navigate("/addListing");
+            }}
+            className="text-white bg-[#F93B1D] rounded-[10px] px-4 py-3 hover:bg-[#DF3014]"
+          >
+            + ლისტინგის დამატება
+          </button>
+          <button className="text-[#F93B1D] border border-[1px] border-[#F93B1D] rounded-[10px] px-4 py-3 ml-4 hover:bg-[#F3F3F3]">
+            + აგენტის დამატება
+          </button>
+        </div>
       </div>
 
       <ChosenFilters
