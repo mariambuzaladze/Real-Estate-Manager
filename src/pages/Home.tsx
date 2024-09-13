@@ -3,7 +3,7 @@ import { MyContext } from "../App";
 import Item from "../components/Item";
 import RangeFilter from "../components/RangeFilter";
 import BedroomsFilter from "../components/BedroomFilter";
-import Filter from "../components/RegionFilter";
+import RegionFilter from "../components/RegionFilter";
 import ChosenFilters from "../components/ChoosenFilters";
 
 interface IRegion {
@@ -30,12 +30,7 @@ export default function Home() {
     const fetchRegions = async () => {
       try {
         const response = await fetch(
-          "https://api.real-estate-manager.redberryinternship.ge/api/regions",
-          {
-            headers: {
-              Authorization: "Bearer 9cfd8995-371f-4210-8952-8ca1881b89be",
-            },
-          }
+          "https://api.real-estate-manager.redberryinternship.ge/api/regions"
         );
         const data = await response.json();
         setRegions(data);
@@ -113,8 +108,8 @@ export default function Home() {
 
   return (
     <div className="py-20 px-40 relative">
-      <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit">
-        <Filter
+      <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit p-1">
+        <RegionFilter
           title="რეგიონი"
           options={regions.map((region) => region.name)}
           onFilterChange={(selected: string | string[] | null) => {
@@ -129,10 +124,11 @@ export default function Home() {
           selected={regionFilter}
           isActive={activeFilter === "region"}
           onToggle={() => handleToggleFilter("region")}
+          multiple
         />
 
         <RangeFilter
-          title="ფასი"
+          title="საფასო კატეგორია"
           onFilterChange={(selected: { min: number; max: number } | null) =>
             setPriceFilter(selected)
           }

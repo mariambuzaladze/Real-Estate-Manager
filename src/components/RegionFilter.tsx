@@ -17,7 +17,7 @@ const RegionFilter: React.FC<FilterProps> = ({
   onFilterChange,
   multiple = false,
   selected,
-  isActive,
+  isActive = false, // Default to false if not provided
   onToggle,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<
@@ -27,7 +27,7 @@ const RegionFilter: React.FC<FilterProps> = ({
   const handleOptionChange = (option: string) => {
     if (multiple) {
       setSelectedOptions((prev) => {
-        const newSelected = prev as string[];
+        const newSelected = Array.isArray(prev) ? prev : [];
         if (newSelected.includes(option)) {
           return newSelected.filter((o) => o !== option);
         } else {
@@ -47,7 +47,7 @@ const RegionFilter: React.FC<FilterProps> = ({
   return (
     <div className="relative">
       <div className="flex gap-1">
-        <button className="w-full p-2 rounded" onClick={onToggle}>
+        <button className="w-full p-2 rounded font-bold" onClick={onToggle}>
           {title}
         </button>
         <img
@@ -60,18 +60,21 @@ const RegionFilter: React.FC<FilterProps> = ({
       {isActive && (
         <div className="w-max gap-1 grid grid-cols-3 absolute bg-white border border-gray-300 mt-1 rounded shadow-lg">
           {options.map((option) => (
-            <div
+            <label
               key={option}
-              className={`p-2 cursor-pointer ${
-                selectedOptions &&
-                (selectedOptions as string[]).includes(option)
-                  ? "bg-gray-100"
-                  : ""
-              }`}
-              onClick={() => handleOptionChange(option)}
+              className="p-2 cursor-pointer flex items-center"
             >
+              <input
+                type="checkbox"
+                checked={
+                  Array.isArray(selectedOptions) &&
+                  selectedOptions.includes(option)
+                }
+                onChange={() => handleOptionChange(option)}
+                className="mr-2"
+              />
               {option}
-            </div>
+            </label>
           ))}
 
           <button

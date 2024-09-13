@@ -5,17 +5,28 @@ import ZipCode from "/images/Zip-code.svg";
 
 export default function Item({ e }: { e: IRealEstate }) {
   return (
-    <div
-      className="border rounded-[14px]"
-      style={{ boxShadow: "5px 5px 12px 0px rgba(2, 21, 38, 0.08)" }}
-    >
+    <div className="border rounded-[14px] hover:shadow-[5px_5px_12px_0px_rgba(2,21,38,0.08)] transition-[0.4s] cursor-pointer">
       <div
-        className="w-full h-[300px] bg-cover bg-no-repeat rounded-t-[14px] rounded-b-none"
+        className="w-full h-[300px] bg-cover bg-no-repeat rounded-t-[14px] rounded-b-none p-5"
         style={{ backgroundImage: `url(${e.image})` }}
-      ></div>
+      >
+        <div className="rounded-[15px] bg-[rgba(2,21,38,0.5)] p-1 w-fit">
+          {e.is_rental === 0 ? (
+            <span className="text-white font-bold tracking-[0.48px]">
+              იყიდება
+            </span>
+          ) : (
+            <span className="text-white font-bold tracking-[0.48px]">
+              ქირავდება
+            </span>
+          )}
+        </div>
+      </div>
 
       <div className="flex flex-col gap-5 p-5 ">
-        <p className="text-[#021526] text-[28px] font-bold">{e.price} ₾</p>
+        <p className="text-[#021526] text-[28px] font-bold">
+          {e.price.toLocaleString("en-US").replace(/,/g, " ")} ₾
+        </p>
 
         <div className="flex">
           <img src={LocationIcon} alt="location icon" />

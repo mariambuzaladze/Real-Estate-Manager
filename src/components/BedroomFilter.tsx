@@ -28,14 +28,14 @@ const BedroomsFilter: React.FC<BedroomsFilterProps> = ({
       onFilterChange(bedrooms === "" ? null : bedrooms);
       if (onToggle) onToggle();
     } else {
-      alert("Number of bedrooms must be a non-negative number.");
+      alert("საძინებლების რაოდენობა არ უნდა იყოს უარყოფითი");
     }
   };
 
   return (
     <div className="relative">
       <div className="flex gap-1">
-        <button className="w-full p-2 rounded" onClick={onToggle}>
+        <button className="w-full p-2 rounded font-bold" onClick={onToggle}>
           {title}
         </button>
         <img
