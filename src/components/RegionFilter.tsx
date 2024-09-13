@@ -17,7 +17,7 @@ const RegionFilter: React.FC<FilterProps> = ({
   onFilterChange,
   multiple = false,
   selected,
-  isActive = false, // Default to false if not provided
+  isActive = false,
   onToggle,
 }) => {
   const [selectedOptions, setSelectedOptions] = useState<
