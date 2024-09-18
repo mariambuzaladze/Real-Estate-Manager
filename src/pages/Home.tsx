@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 import Item from "../components/Item";
@@ -16,6 +16,7 @@ interface IRegion {
 export default function Home({ showAgent }: { showAgent: boolean }) {
   const navigate = useNavigate();
   const { data, setShowAgent } = useContext(MyContext);
+  const addAgentRef = useRef<HTMLDivElement | null>(null);
 
   const [regionFilter, setRegionFilter] = useState<string[]>(() => {
     const saved = localStorage.getItem("regionFilter");
@@ -58,7 +59,6 @@ export default function Home({ showAgent }: { showAgent: boolean }) {
     fetchRegions();
   }, []);
 
-  // Save filters to local storage when they change
   useEffect(() => {
     localStorage.setItem("regionFilter", JSON.stringify(regionFilter));
   }, [regionFilter]);
@@ -74,6 +74,23 @@ export default function Home({ showAgent }: { showAgent: boolean }) {
   useEffect(() => {
     localStorage.setItem("priceFilter", JSON.stringify(priceFilter));
   }, [priceFilter]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        addAgentRef.current &&
+        !addAgentRef.current.contains(event.target as Node)
+      ) {
+        setShowAgent(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setShowAgent]);
 
   const filteredData = (data ?? []).filter((e) => {
     const regionName = regions.find(
@@ -234,7 +251,13 @@ export default function Home({ showAgent }: { showAgent: boolean }) {
           )}
         </div>
       </div>
-      {showAgent ? <AddAgent /> : ""}
+      {showAgent ? (
+        <div ref={addAgentRef}>
+          <AddAgent />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
