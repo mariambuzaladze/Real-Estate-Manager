@@ -15,11 +15,13 @@ import AddListing from "./pages/AddListing";
 interface IDataContext {
   data: IRealEstate[] | null;
   setData: Dispatch<SetStateAction<IRealEstate[]>>;
+  setShowAgent: Dispatch<SetStateAction<boolean>>;
 }
 
 export const MyContext = createContext<IDataContext>({
   data: null,
   setData: () => {},
+  setShowAgent: () => {},
 });
 
 function App() {
@@ -46,17 +48,20 @@ function App() {
       .catch((error) => console.error("Error:", error));
   }, []);
 
+  const [showAgent, setShowAgent] = useState(false);
+
   return (
     <MyContext.Provider
       value={{
         data,
         setData,
+        setShowAgent,
       }}
     >
       <BrowserRouter>
-        <Header />
+        <Header showAgent={showAgent} />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home showAgent={showAgent} />} />
           <Route path="/listing/:id" element={<ListingPage />} />
           <Route path="/addListing" element={<AddListing />} />
         </Routes>

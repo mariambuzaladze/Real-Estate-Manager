@@ -6,15 +6,17 @@ import RangeFilter from "../components/RangeFilter";
 import BedroomsFilter from "../components/BedroomFilter";
 import RegionFilter from "../components/RegionFilter";
 import ChosenFilters from "../components/ChoosenFilters";
+import AddAgent from "../components/AddAgent";
 
 interface IRegion {
   id: string;
   name: string;
 }
 
-export default function Home() {
+export default function Home({ showAgent }: { showAgent: boolean }) {
   const navigate = useNavigate();
-  const { data } = useContext(MyContext);
+  const { data, setShowAgent } = useContext(MyContext);
+
   const [regionFilter, setRegionFilter] = useState<string[]>([]);
   const [areaFilter, setAreaFilter] = useState<{
     min: number;
@@ -109,91 +111,101 @@ export default function Home() {
   }
 
   return (
-    <div className="py-20 px-40 relative">
-      <div className="flex justify-between">
-        <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit p-1">
-          <RegionFilter
-            title="რეგიონი"
-            options={regions.map((region) => region.name)}
-            onFilterChange={(selected: string | string[] | null) => {
-              if (Array.isArray(selected)) {
-                setRegionFilter(selected);
-              } else if (selected === null) {
-                setRegionFilter([]);
-              } else {
-                setRegionFilter([selected]);
+    <div>
+      <div className={`py-20 px-40 relative ${showAgent ? "opacity-50" : ""}`}>
+        <div className="flex justify-between">
+          <div className="flex gap-4 mb-10 rounded-[10px] border border-gray-300 w-fit p-1">
+            <RegionFilter
+              title="რეგიონი"
+              options={regions.map((region) => region.name)}
+              onFilterChange={(selected: string | string[] | null) => {
+                if (Array.isArray(selected)) {
+                  setRegionFilter(selected);
+                } else if (selected === null) {
+                  setRegionFilter([]);
+                } else {
+                  setRegionFilter([selected]);
+                }
+              }}
+              selected={regionFilter}
+              isActive={activeFilter === "region"}
+              onToggle={() => handleToggleFilter("region")}
+              multiple
+            />
+
+            <RangeFilter
+              title="საფასო კატეგორია"
+              onFilterChange={(selected: { min: number; max: number } | null) =>
+                setPriceFilter(selected)
               }
-            }}
-            selected={regionFilter}
-            isActive={activeFilter === "region"}
-            onToggle={() => handleToggleFilter("region")}
-            multiple
-          />
+              selected={priceFilter}
+              isActive={activeFilter === "price"}
+              onToggle={() => handleToggleFilter("price")}
+            />
 
-          <RangeFilter
-            title="საფასო კატეგორია"
-            onFilterChange={(selected: { min: number; max: number } | null) =>
-              setPriceFilter(selected)
-            }
-            selected={priceFilter}
-            isActive={activeFilter === "price"}
-            onToggle={() => handleToggleFilter("price")}
-          />
+            <RangeFilter
+              title="ფართობი"
+              onFilterChange={(selected: { min: number; max: number } | null) =>
+                setAreaFilter(selected)
+              }
+              selected={areaFilter}
+              isActive={activeFilter === "area"}
+              onToggle={() => handleToggleFilter("area")}
+            />
 
-          <RangeFilter
-            title="ფართობი"
-            onFilterChange={(selected: { min: number; max: number } | null) =>
-              setAreaFilter(selected)
-            }
-            selected={areaFilter}
-            isActive={activeFilter === "area"}
-            onToggle={() => handleToggleFilter("area")}
-          />
+            <BedroomsFilter
+              title="საძინებლების რაოდენობა"
+              onFilterChange={(selected: number | null) =>
+                setBedroomFilter(selected)
+              }
+              selected={bedroomFilter}
+              isActive={activeFilter === "bedroom"}
+              onToggle={() => handleToggleFilter("bedroom")}
+            />
+          </div>
 
-          <BedroomsFilter
-            title="საძინებლების რაოდენობა"
-            onFilterChange={(selected: number | null) =>
-              setBedroomFilter(selected)
-            }
-            selected={bedroomFilter}
-            isActive={activeFilter === "bedroom"}
-            onToggle={() => handleToggleFilter("bedroom")}
-          />
+          <div>
+            <button
+              onClick={() => {
+                navigate("/addListing");
+              }}
+              className="text-white bg-[#F93B1D] rounded-[10px] px-4 py-3 hover:bg-[#DF3014]"
+            >
+              + ლისტინგის დამატება
+            </button>
+            <button
+              className="text-[#F93B1D] border border-[1px] border-[#F93B1D] rounded-[10px] px-4 py-3 ml-4 hover:bg-[#F3F3F3]"
+              onClick={() => {
+                setShowAgent(true);
+              }}
+            >
+              + აგენტის დამატება
+            </button>
+          </div>
         </div>
 
-        <div>
-          <button
-            onClick={() => {
-              navigate("/addListing");
-            }}
-            className="text-white bg-[#F93B1D] rounded-[10px] px-4 py-3 hover:bg-[#DF3014]"
-          >
-            + ლისტინგის დამატება
-          </button>
-          <button className="text-[#F93B1D] border border-[1px] border-[#F93B1D] rounded-[10px] px-4 py-3 ml-4 hover:bg-[#F3F3F3]">
-            + აგენტის დამატება
-          </button>
+        <ChosenFilters
+          filters={{
+            region: regionFilter,
+            price: priceFilter,
+            area: areaFilter,
+            bedroom: bedroomFilter,
+          }}
+          onRemove={handleRemoveFilter}
+          onReset={handleResetFilters}
+        />
+
+        <div className="grid grid-cols-4 gap-5">
+          {itemsToDisplay.length > 0 ? (
+            itemsToDisplay.map((e) => <Item key={e.zip_code} e={e} />)
+          ) : (
+            <p className="text-[rgba(2, 21, 38, 0.80)] text-2xl w-max">
+              აღნიშნული მონაცემებით განცხადება არ იძებნება
+            </p>
+          )}
         </div>
       </div>
-
-      <ChosenFilters
-        filters={{
-          region: regionFilter,
-          price: priceFilter,
-          area: areaFilter,
-          bedroom: bedroomFilter,
-        }}
-        onRemove={handleRemoveFilter}
-        onReset={handleResetFilters}
-      />
-
-      <div className="grid grid-cols-4 gap-5">
-        {itemsToDisplay.length > 0 ? (
-          itemsToDisplay.map((e) => <Item key={e.zip_code} e={e} />)
-        ) : (
-          <p>No items match your filter criteria</p>
-        )}
-      </div>
+      {showAgent ? <AddAgent /> : ""}
     </div>
   );
 }
