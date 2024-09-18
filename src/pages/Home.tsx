@@ -17,16 +17,28 @@ export default function Home({ showAgent }: { showAgent: boolean }) {
   const navigate = useNavigate();
   const { data, setShowAgent } = useContext(MyContext);
 
-  const [regionFilter, setRegionFilter] = useState<string[]>([]);
+  const [regionFilter, setRegionFilter] = useState<string[]>(() => {
+    const saved = localStorage.getItem("regionFilter");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [areaFilter, setAreaFilter] = useState<{
     min: number;
     max: number;
-  } | null>(null);
-  const [bedroomFilter, setBedroomFilter] = useState<number | null>(null);
+  } | null>(() => {
+    const saved = localStorage.getItem("areaFilter");
+    return saved ? JSON.parse(saved) : null;
+  });
+  const [bedroomFilter, setBedroomFilter] = useState<number | null>(() => {
+    const saved = localStorage.getItem("bedroomFilter");
+    return saved ? JSON.parse(saved) : null;
+  });
   const [priceFilter, setPriceFilter] = useState<{
     min: number;
     max: number;
-  } | null>(null);
+  } | null>(() => {
+    const saved = localStorage.getItem("priceFilter");
+    return saved ? JSON.parse(saved) : null;
+  });
   const [regions, setRegions] = useState<IRegion[]>([]);
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
@@ -45,6 +57,23 @@ export default function Home({ showAgent }: { showAgent: boolean }) {
 
     fetchRegions();
   }, []);
+
+  // Save filters to local storage when they change
+  useEffect(() => {
+    localStorage.setItem("regionFilter", JSON.stringify(regionFilter));
+  }, [regionFilter]);
+
+  useEffect(() => {
+    localStorage.setItem("areaFilter", JSON.stringify(areaFilter));
+  }, [areaFilter]);
+
+  useEffect(() => {
+    localStorage.setItem("bedroomFilter", JSON.stringify(bedroomFilter));
+  }, [bedroomFilter]);
+
+  useEffect(() => {
+    localStorage.setItem("priceFilter", JSON.stringify(priceFilter));
+  }, [priceFilter]);
 
   const filteredData = (data ?? []).filter((e) => {
     const regionName = regions.find(

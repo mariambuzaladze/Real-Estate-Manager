@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { MyContext } from "../App";
 
 export default function AddAgent() {
-  const { setShowAgent, setData, data } = useContext(MyContext);
+  const { setShowAgent } = useContext(MyContext);
 
   const AddAgentSchema = Yup.object().shape({
     name: Yup.string()
