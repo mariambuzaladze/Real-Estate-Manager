@@ -63,7 +63,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home showAgent={showAgent} />} />
           <Route path="/listing/:id" element={<ListingPage />} />
-          <Route path="/addListing" element={<AddListing />} />
+          <Route
+            path="/addListing"
+            element={<AddListing showAgent={showAgent} />}
+          />
         </Routes>
       </BrowserRouter>{" "}
     </MyContext.Provider>
