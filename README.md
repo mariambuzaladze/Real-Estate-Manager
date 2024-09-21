@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+# Real Estate Manager  
+  
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Technologies Used  
 
-Currently, two official plugins are available:
+**React.js:** For building the user interface and handling component-based architecture.  
+  
+**TypeScript:** Provides static typing to help catch errors early and improve code quality.  
+  
+**Tailwind CSS:** For fast and efficient styling with utility-first CSS classes.  
+  
+**Formik:** For managing form state, handling submissions, and validating user input.  
+  
+**Yup:** For schema-based form validation.  
+  
+**React Router:** For routing between pages.  
+  
+**Custom Carousel/Slider:** For displaying real estate listings in a scrollable format.  
+  
+**API Integration:** Fetches region, city, and agent data to dynamically populate forms and listings.  
+  
+**Local Storage:** Used to persist certain states, such as theme preferences.  
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Expanding the ESLint configuration
+## Key Fetures
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+**Filter Functionality:** Users can filter listings by region, price, area, bedrooms, and rental status.  
+  
+**Dynamic Forms:** Various forms for adding agents, creating listings, and filtering are handled using Formik and Yup.  
+  
+**Listing Carousel:** Displays items from the same region with infinite scrolling and clickable arrows.  
+  
+**Modal Functionality:** Includes modals for deleting listings and adding agents, with user-friendly interactions such as closing on outside clicks.  
+  
+  
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## Contact
+**LinkedIn**: https://www.linkedin.com/in/mariam-buzaladze-aa22b6297/  
+  
+**Email**: mariambuzaladze10@gmail.com
