@@ -5,23 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { MyContext } from "../App";
 import AddAgent from "../components/AddAgent";
 
-interface Region {
-  id: number;
-  name: string;
-}
-
-interface City {
-  id: number;
-  name: string;
-  region_id: number;
-}
-
-interface Agent {
-  id: number;
-  name: string;
-  surname: string;
-}
-
 export default function AddListing({ showAgent }: { showAgent: boolean }) {
   const navigate = useNavigate();
   const { setShowAgent } = useContext(MyContext);
