@@ -40,3 +40,8 @@ interface City {
   name: string;
   region_id: number;
 }
+
+interface DeleteListingProps {
+  deleteListing: () => Promise<void>;
+  setShowDelete: React.Dispatch<React.SetStateAction<boolean>>;
+}
