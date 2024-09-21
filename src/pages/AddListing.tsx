@@ -127,16 +127,30 @@ export default function AddListing({ showAgent }: { showAgent: boolean }) {
         agent_id: Yup.number().required("აგენტი აუცილებელია"),
       })}
       onSubmit={async (values) => {
+        const formData = new FormData();
+
+        // Adding the form values
+        formData.append("address", values.address);
+        formData.append("image", values.image); // Assuming the image is already uploaded
+        formData.append("region_id", values.region_id.toString());
+        formData.append("description", values.description);
+        formData.append("city_id", values.city_id.toString());
+        formData.append("zip_code", values.zip_code);
+        formData.append("price", values.price.toString());
+        formData.append("area", values.area.toString());
+        formData.append("bedrooms", values.bedrooms.toString());
+        formData.append("is_rental", values.is_rental.toString());
+        formData.append("agent_id", values.agent_id.toString());
+
         try {
           const response = await fetch(
             `https://api.real-estate-manager.redberryinternship.ge/api/real-estates`,
             {
               method: "POST",
               headers: {
-                "Content-Type": "application/json",
                 Authorization: "Bearer 9cfd8995-371f-4210-8952-8ca1881b89be",
               },
-              body: JSON.stringify(values),
+              body: formData,
             }
           );
 
@@ -148,6 +162,7 @@ export default function AddListing({ showAgent }: { showAgent: boolean }) {
           }
 
           localStorage.removeItem("listingFormData");
+          setTimeout(() => navigate("/"), 1000);
         } catch (error) {
           console.error("Error:", error);
         }
@@ -412,9 +427,6 @@ export default function AddListing({ showAgent }: { showAgent: boolean }) {
                 <button
                   type="submit"
                   className="text-white bg-[#F93B1D] rounded-[10px] px-4 py-3 hover:bg-[#DF3014]"
-                  onClick={() => {
-                    setTimeout(() => navigate("/"), 1000);
-                  }}
                 >
                   დაამატე ლისტინგი
                 </button>
